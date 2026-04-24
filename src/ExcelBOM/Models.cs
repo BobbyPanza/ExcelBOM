@@ -26,6 +26,6 @@ public class Fase
     public string FASEQ { get; set; } = "";
     public string FACOD { get; set; } = "";
     public string FADSC { get; set; } = "";
-    public string FAHLV { get; set; } = "";
-    public string FASLV { get; set; } = "";
+    public string TempoAtt { get; set; } = "";
+    public string TempoLav { get; set; } = "";
 }

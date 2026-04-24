@@ -83,7 +83,8 @@ BEGIN
                     AND TRY_CAST(ph.FASEQ AS INT) = f.FASEQ);
 
             -- Inserisci fasi nuove in A_FAC
-            -- Dati risorsa/costo/utilizzo presi da A_FAS; DurataH/DurataMin dall'Excel
+            -- Dati risorsa/costo/utilizzo presi da A_FAS; TempoAtt/TempoLav (minuti) dall'Excel
+            -- Formula: FAHxx = FLOOR(min/60), FASxx = min*60 % 3600
             -- IDFAS = progressivo per ciclo: MAX esistente + ROW_NUMBER sulle nuove righe
             INSERT INTO A_FAC (
                 CCCOD, IDFAS, FASEQ, FAIDN,
@@ -117,10 +118,10 @@ BEGIN
                 ISNULL(fas.FAEXE, 'I'),
                 ISNULL(fas.FACST, 0),
                 ISNULL(fas.FACOR, 0),
-                ISNULL(fas.FAHAT, 0),
-                ISNULL(fas.FASAT, 0),
-                TRY_CAST(ph.FAHLV AS smallint),             -- DurataH dall'Excel
-                TRY_CAST(ph.FASLV AS numeric(18,6)),        -- DurataMin dall'Excel
+                ISNULL(FLOOR(TRY_CAST(ph.TempoAtt AS float) / 60), 0),   -- FAHAT
+                ISNULL(TRY_CAST(ph.TempoAtt AS int) * 60 % 3600, 0),    -- FASAT
+                ISNULL(FLOOR(TRY_CAST(ph.TempoLav AS float) / 60), 0),  -- FAHLV
+                ISNULL(TRY_CAST(ph.TempoLav AS int) * 60 % 3600, 0),    -- FASLV
                 ISNULL(fas.FAQTP, 0),
                 ISNULL(fas.FACSO, 0),
                 fas.FAIST,
@@ -155,14 +156,14 @@ BEGIN
             UPDATE f
             SET f.FACOD  = ISNULL(m.CodiceSistema, ph.FACOD),
                 f.FADSC  = ph.FADSC,
-                f.FAHLV  = TRY_CAST(ph.FAHLV AS smallint),
-                f.FASLV  = TRY_CAST(ph.FASLV AS numeric(18,6)),
+                f.FAHAT  = ISNULL(FLOOR(TRY_CAST(ph.TempoAtt AS float) / 60), f.FAHAT),
+                f.FASAT  = ISNULL(TRY_CAST(ph.TempoAtt AS int) * 60 % 3600, f.FASAT),
+                f.FAHLV  = ISNULL(FLOOR(TRY_CAST(ph.TempoLav AS float) / 60), f.FAHLV),
+                f.FASLV  = ISNULL(TRY_CAST(ph.TempoLav AS int) * 60 % 3600, f.FASLV),
                 f.FATYP  = ISNULL(fas.FATYP,  f.FATYP),
                 f.FAEXE  = ISNULL(fas.FAEXE,  f.FAEXE),
                 f.FACST  = ISNULL(fas.FACST,  f.FACST),
                 f.FACOR  = ISNULL(fas.FACOR,  f.FACOR),
-                f.FAHAT  = ISNULL(fas.FAHAT,  f.FAHAT),
-                f.FASAT  = ISNULL(fas.FASAT,  f.FASAT),
                 f.FAQTP  = ISNULL(fas.FAQTP,  f.FAQTP),
                 f.FACSO  = ISNULL(fas.FACSO,  f.FACSO),
                 f.FAIST  = fas.FAIST,

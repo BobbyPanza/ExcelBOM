@@ -67,8 +67,11 @@ Il file `.xlsx` deve avere esattamente **3 fogli** con i nomi e le colonne segue
 
 ### Foglio `Cicli`
 
-| Codice | SeqFase | CodFase | Descrizione | DurataH | DurataMin |
+| Codice | SeqFase | CodFase | Descrizione | TempoAtt | TempoLav |
 |---|---|---|---|---|---|
+
+- **TempoAtt**: tempo di attrezzaggio in minuti → FAHAT (ore) / FASAT (secondi residui)
+- **TempoLav**: tempo di lavorazione in minuti → FAHLV (ore) / FASLV (secondi residui)
 
 - **CodFase**: codice fase di `A_FAS` oppure nome mappato in `Xt_ExcelBom_Mappings`
 - **DurataH / DurataMin**: tempo di lavorazione (ore / minuti)

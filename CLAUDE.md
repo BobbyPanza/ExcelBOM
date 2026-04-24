@@ -24,8 +24,10 @@ Excel con 3 fogli fissi:
 
 ### Foglio "Cicli"
 
-| Codice | SeqFase | CodFase | Descrizione | DurataH | DurataMin |
+| Codice | SeqFase | CodFase | Descrizione | TempoAtt | TempoLav |
 |---|---|---|---|---|---|
+
+- TempoAtt e TempoLav in minuti interi. Conversione SP: FAHxx = FLOOR(min/60), FASxx = min*60 % 3600.
 
 ## Configurazione (config.json)
 

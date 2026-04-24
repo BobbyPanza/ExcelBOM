@@ -312,14 +312,14 @@
           <Type>VARCHAR(255)</Type>
         </Field>
         <Field ReadOnly="true">
-          <Name>FAHLV</Name>
-          <Caption>Durata H</Caption>
-          <Type>VARCHAR(50)</Type>
+          <Name>TempoAtt</Name>
+          <Caption>Tempo Att (min)</Caption>
+          <Type>VARCHAR(20)</Type>
         </Field>
         <Field ReadOnly="true">
-          <Name>FASLV</Name>
-          <Caption>Durata Min</Caption>
-          <Type>VARCHAR(50)</Type>
+          <Name>TempoLav</Name>
+          <Caption>Tempo Lav (min)</Caption>
+          <Type>VARCHAR(20)</Type>
         </Field>
       </Fields>
     </DatabaseInfo>

@@ -415,8 +415,8 @@ public partial class MainForm : Form
                         FASEQ = GetCellValue(row, colIndexes, "SeqFase"),
                         FACOD = codFase,
                         FADSC = GetCellValue(row, colIndexes, "Descrizione"),
-                        FAHLV = GetCellValue(row, colIndexes, "DurataH"),
-                        FASLV = GetCellValue(row, colIndexes, "DurataMin")
+                        TempoAtt = GetCellValue(row, colIndexes, "TempoAtt"),
+                        TempoLav = GetCellValue(row, colIndexes, "TempoLav")
                     });
                 }
             }
@@ -451,8 +451,8 @@ public partial class MainForm : Form
             SeqFase = f.FASEQ,
             CodFase = f.FACOD,
             Descrizione = f.FADSC,
-            DurataH = f.FAHLV,
-            DurataMin = f.FASLV
+            TempoAtt = f.TempoAtt,
+            TempoLav = f.TempoLav
         }).ToList();
     }
 
@@ -564,12 +564,12 @@ public partial class MainForm : Form
         dt.Columns.Add("FASEQ", typeof(string));
         dt.Columns.Add("FACOD", typeof(string));
         dt.Columns.Add("FADSC", typeof(string));
-        dt.Columns.Add("FAHLV", typeof(string));
-        dt.Columns.Add("FASLV", typeof(string));
+        dt.Columns.Add("TempoAtt", typeof(string));
+        dt.Columns.Add("TempoLav", typeof(string));
 
         foreach (var f in list)
         {
-            dt.Rows.Add(runId, f.PACOD, f.FASEQ, f.FACOD, f.FADSC, f.FAHLV, f.FASLV);
+            dt.Rows.Add(runId, f.PACOD, f.FASEQ, f.FACOD, f.FADSC, f.TempoAtt, f.TempoLav);
         }
 
         using var bulk = new SqlBulkCopy(conn, SqlBulkCopyOptions.Default, transaction);
