@@ -325,28 +325,21 @@ public partial class MainForm : Form
         // Load Articoli
         if (chkAnagrafiche.Checked)
         {
-            var sheet = workbook.Worksheet("Articoli");
+            var sheet = workbook.Worksheet(C("Sheet_Articoli", "Articoli"));
             if (sheet != null)
             {
-                var headerRow = sheet.Row(1);
-                var colIndexes = new Dictionary<string, int>();
-                for (int col = 1; col <= headerRow.LastCellUsed().Address.ColumnNumber; col++)
-                {
-                    var header = headerRow.Cell(col).GetString();
-                    colIndexes[header] = col;
-                }
-
+                var colIndexes = BuildColIndex(sheet);
                 foreach (var row in sheet.RowsUsed().Skip(1))
                 {
-                    var codice = GetCellValue(row, colIndexes, "Codice");
+                    var codice = GetCellValue(row, colIndexes, C("Col_Articoli_Codice", "Codice"));
                     if (string.IsNullOrEmpty(codice)) continue;
 
-                    var famiglia = GetCellValue(row, colIndexes, "Famiglia");
-                    var udm = GetCellValue(row, colIndexes, "UdM");
+                    var famiglia = GetCellValue(row, colIndexes, C("Col_Articoli_Famiglia", "Famiglia"));
+                    var udm      = GetCellValue(row, colIndexes, C("Col_Articoli_UdM", "UdM"));
                     anagrafiche.Add(new Anagrafica
                     {
                         PACOD = codice,
-                        PADSC = GetCellValue(row, colIndexes, "Descrizione"),
+                        PADSC = GetCellValue(row, colIndexes, C("Col_Articoli_Descrizione", "Descrizione")),
                         FMCOD = string.IsNullOrEmpty(famiglia) ? config.GetValueOrDefault("FAMIGLIA_DEFAULT", "") : famiglia,
                         PAUDM = string.IsNullOrEmpty(udm) ? config.GetValueOrDefault("PAUDM_DEFAULT", "PZ") : udm,
                         PATYP = config.GetValueOrDefault("PATYP_DEFAULT", "C"),
@@ -359,31 +352,24 @@ public partial class MainForm : Form
         // Load Diba
         if (chkDistinta.Checked)
         {
-            var sheet = workbook.Worksheet("Diba");
+            var sheet = workbook.Worksheet(C("Sheet_Diba", "Diba"));
             if (sheet != null)
             {
-                var headerRow = sheet.Row(1);
-                var colIndexes = new Dictionary<string, int>();
-                for (int col = 1; col <= headerRow.LastCellUsed().Address.ColumnNumber; col++)
-                {
-                    var header = sheet.Cell(1, col).GetString();
-                    colIndexes[header] = col;
-                }
-
+                var colIndexes = BuildColIndex(sheet);
                 foreach (var row in sheet.RowsUsed().Skip(1))
                 {
-                    var padre = GetCellValue(row, colIndexes, "Padre");
-                    var figlio = GetCellValue(row, colIndexes, "Figlio");
+                    var padre  = GetCellValue(row, colIndexes, C("Col_Diba_Padre", "Padre"));
+                    var figlio = GetCellValue(row, colIndexes, C("Col_Diba_Figlio", "Figlio"));
                     if (string.IsNullOrEmpty(padre) || string.IsNullOrEmpty(figlio)) continue;
 
                     distinte.Add(new Distinta
                     {
                         DBPAR = padre,
                         DBCHL = figlio,
-                        DBSEQ = GetCellValue(row, colIndexes, "Seq"),
-                        DBQTA = GetCellValue(row, colIndexes, "Quantità"),
-                        DBUDM = GetCellValue(row, colIndexes, "UdM"),
-                        DBNT1 = GetCellValue(row, colIndexes, "Nota")
+                        DBSEQ = GetCellValue(row, colIndexes, C("Col_Diba_Seq", "Seq")),
+                        DBQTA = GetCellValue(row, colIndexes, C("Col_Diba_Quantita", "Quantità")),
+                        DBUDM = GetCellValue(row, colIndexes, C("Col_Diba_UdM", "UdM")),
+                        DBNT1 = GetCellValue(row, colIndexes, C("Col_Diba_Nota", "Nota"))
                     });
                 }
             }
@@ -392,31 +378,24 @@ public partial class MainForm : Form
         // Load Cicli
         if (chkCiclo.Checked)
         {
-            var sheet = workbook.Worksheet("Cicli");
+            var sheet = workbook.Worksheet(C("Sheet_Cicli", "Cicli"));
             if (sheet != null)
             {
-                var headerRow = sheet.Row(1);
-                var colIndexes = new Dictionary<string, int>();
-                for (int col = 1; col <= headerRow.LastCellUsed().Address.ColumnNumber; col++)
-                {
-                    var header = sheet.Cell(1, col).GetString();
-                    colIndexes[header] = col;
-                }
-
+                var colIndexes = BuildColIndex(sheet);
                 foreach (var row in sheet.RowsUsed().Skip(1))
                 {
-                    var codice = GetCellValue(row, colIndexes, "Codice");
-                    var codFase = GetCellValue(row, colIndexes, "CodFase");
+                    var codice  = GetCellValue(row, colIndexes, C("Col_Cicli_Codice", "Codice"));
+                    var codFase = GetCellValue(row, colIndexes, C("Col_Cicli_CodFase", "CodFase"));
                     if (string.IsNullOrEmpty(codice) || string.IsNullOrEmpty(codFase)) continue;
 
                     fasi.Add(new Fase
                     {
-                        PACOD = codice,
-                        FASEQ = GetCellValue(row, colIndexes, "SeqFase"),
-                        FACOD = codFase,
-                        FADSC = GetCellValue(row, colIndexes, "Descrizione"),
-                        TempoAtt = GetCellValue(row, colIndexes, "TempoAtt"),
-                        TempoLav = GetCellValue(row, colIndexes, "TempoLav")
+                        PACOD    = codice,
+                        FASEQ    = GetCellValue(row, colIndexes, C("Col_Cicli_SeqFase", "SeqFase")),
+                        FACOD    = codFase,
+                        FADSC    = GetCellValue(row, colIndexes, C("Col_Cicli_Descrizione", "Descrizione")),
+                        TempoAtt = GetCellValue(row, colIndexes, C("Col_Cicli_TempoAtt", "TempoAtt")),
+                        TempoLav = GetCellValue(row, colIndexes, C("Col_Cicli_TempoLav", "TempoLav"))
                     });
                 }
             }
@@ -682,6 +661,22 @@ public partial class MainForm : Form
             dgvDiba.Rows[i].DefaultCellStyle.BackColor = distinteColors[i];
         for (int i = 0; i < fasiColors.Count && i < dgvCicli.Rows.Count; i++)
             dgvCicli.Rows[i].DefaultCellStyle.BackColor = fasiColors[i];
+    }
+
+    private string C(string key, string defaultValue) =>
+        config.GetValueOrDefault(key, defaultValue)!;
+
+    private static Dictionary<string, int> BuildColIndex(IXLWorksheet sheet)
+    {
+        var idx = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+        var last = sheet.Row(1).LastCellUsed();
+        if (last == null) return idx;
+        for (int col = 1; col <= last.Address.ColumnNumber; col++)
+        {
+            var h = sheet.Cell(1, col).GetString();
+            if (!string.IsNullOrEmpty(h)) idx[h] = col;
+        }
+        return idx;
     }
 
     private string GetCellValue(IXLRow row, Dictionary<string, int> colIndexes, string colName)
