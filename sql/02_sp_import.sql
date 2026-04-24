@@ -62,12 +62,15 @@ BEGIN
         -- Upsert Ciclo
         IF @UpdCiclo = 1
         BEGIN
-            -- Crea A_CCL per articoli che non ce l'hanno
+            -- Crea A_CCL solo per articoli che hanno almeno una fase nel run
             INSERT INTO A_CCL (CCCOD, CCDSC, CCABL, CCCMP)
             SELECT DISTINCT p.PACOD, p.PADSC, 'Y', 'N'
             FROM Xt_ExcelBom_Parts p
             LEFT JOIN A_CCL c ON c.CCCOD = p.PACOD
-            WHERE p.IDRun = @IDRun AND c.CCCOD IS NULL;
+            WHERE p.IDRun = @IDRun
+              AND c.CCCOD IS NULL
+              AND EXISTS (SELECT 1 FROM Xt_ExcelBom_Phases ph
+                          WHERE ph.IDRun = @IDRun AND ph.PACOD = p.PACOD);
 
             -- Elimina fasi obsolete: solo per cicli che hanno ALMENO UNA fase nel nuovo Excel
             -- (se un ciclo non compare in Xt_ExcelBom_Phases non viene toccato)
@@ -229,19 +232,25 @@ BEGIN
                 GROUP BY CCCOD
             ) x ON f.CCCOD = x.CCCOD AND f.FASEQ = x.MaxSeq;
 
-            -- Associa ciclo all'articolo in L_PACC
+            -- Associa ciclo all'articolo in L_PACC (solo se ha fasi)
             INSERT INTO L_PACC (PACOD, CCCOD, LPRIM)
             SELECT DISTINCT p.PACOD, p.PACOD, 'Y'
             FROM Xt_ExcelBom_Parts p
             LEFT JOIN L_PACC l ON l.PACOD = p.PACOD AND l.CCCOD = p.PACOD
-            WHERE p.IDRun = @IDRun AND l.PACOD IS NULL;
+            WHERE p.IDRun = @IDRun
+              AND l.PACOD IS NULL
+              AND EXISTS (SELECT 1 FROM Xt_ExcelBom_Phases ph
+                          WHERE ph.IDRun = @IDRun AND ph.PACOD = p.PACOD);
 
-            -- Aggiorna PACCP in A_PAR
-            UPDATE A_PAR
-            SET PACCP = p.PACOD
+            -- Aggiorna PACCP in A_PAR (solo se ha fasi)
+            UPDATE a
+            SET a.PACCP = p.PACOD
             FROM A_PAR a
             INNER JOIN Xt_ExcelBom_Parts p ON p.PACOD = a.PACOD
-            WHERE p.IDRun = @IDRun AND (a.PACCP IS NULL OR a.PACCP != p.PACOD);
+            WHERE p.IDRun = @IDRun
+              AND (a.PACCP IS NULL OR a.PACCP != p.PACOD)
+              AND EXISTS (SELECT 1 FROM Xt_ExcelBom_Phases ph
+                          WHERE ph.IDRun = @IDRun AND ph.PACOD = p.PACOD);
         END
 
         UPDATE Xt_ExcelBom_LogRun
