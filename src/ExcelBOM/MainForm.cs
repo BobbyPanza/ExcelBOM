@@ -683,10 +683,10 @@ public partial class MainForm : Form
 
     private string GetCellValue(IXLRow row, Dictionary<string, int> colIndexes, string colName)
     {
-        if (colIndexes.TryGetValue(colName, out var colIndex))
-        {
-            return row.Cell(colIndex).GetString();
-        }
-        return "";
+        if (!colIndexes.TryGetValue(colName, out var colIndex)) return "";
+        var cell = row.Cell(colIndex);
+        if (cell.DataType == XLDataType.Number)
+            return cell.GetDouble().ToString(System.Globalization.CultureInfo.InvariantCulture);
+        return cell.GetString();
     }
 }
