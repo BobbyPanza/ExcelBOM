@@ -1,0 +1,10 @@
+{
+  "ConnectionString": "Server=localhost;Database=Factory;User Id=sa;Password=<PASSWORD>;TrustServerCertificate=True;",
+  "PATYP_DEFAULT": "C",
+  "PATYF_DEFAULT": "I",
+  "PAUDM_DEFAULT": "PZ",
+  "FAMIGLIA_DEFAULT": "Generica",
+  "EnableAnagrafiche": true,
+  "EnableDistinta": true,
+  "EnableCiclo": true
+}

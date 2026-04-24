@@ -1,0 +1,15 @@
+# Build output
+src/ExcelBOM/bin/
+src/ExcelBOM/obj/
+publish/
+
+# Claude internal
+.claude/
+
+# User-specific
+*.user
+*.suo
+.vs/
+
+# Local config with real credentials (copy from config.json and fill in)
+# config.json is committed as a template with placeholder password
