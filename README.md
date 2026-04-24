@@ -70,13 +70,26 @@ Il file `.xlsx` deve avere esattamente **3 fogli** con i nomi e le colonne segue
 | Codice | SeqFase | CodFase | Descrizione | TempoAtt | TempoLav |
 |---|---|---|---|---|---|
 
-- **TempoAtt**: tempo di attrezzaggio in minuti → FAHAT (ore) / FASAT (secondi residui)
-- **TempoLav**: tempo di lavorazione in minuti → FAHLV (ore) / FASLV (secondi residui)
-
 - **CodFase**: codice fase di `A_FAS` oppure nome mappato in `Xt_ExcelBom_Mappings`
-- **DurataH / DurataMin**: tempo di lavorazione (ore / minuti)
+- **TempoAtt**: tempo di attrezzaggio in **minuti interi** → convertito in FAHAT (ore) / FASAT (secondi residui)
+- **TempoLav**: tempo di lavorazione in **minuti interi** → convertito in FAHLV (ore) / FASLV (secondi residui)
 
-Un file di esempio è disponibile in `samples/test_import.xlsx`.
+Un file di esempio multi-livello è disponibile in `samples/test_import_multi.xlsx`.
+
+---
+
+## Mappature fasi ciclo
+
+Se nel foglio `Cicli` si usano nomi descrittivi invece dei codici `A_FAS` (es. `Verniciatura` invece di `FA04`), occorre popolare la tabella `Xt_ExcelBom_Mappings`:
+
+| IDMapping | Ambito | CodiceExcel | CodiceSistema |
+|---|---|---|---|
+| 1 | FASE_CICLO | Verniciatura | FA04 |
+| 2 | FASE_CICLO | Saldatura | FA03 |
+
+Lo script `sql/03_mappings_seed.sql` inserisce alcuni esempi di partenza. Le mappature si possono gestire direttamente da Factory tramite la custom form **ExcelBOM - Mappings Fasi** (vedi sezione Custom Forms).
+
+> **Nota**: se un codice fase non è in `A_FAS` e non ha una mappatura, la riga viene evidenziata in **rosso** nella griglia di staging — l'import è comunque possibile ma il ciclo non avrà i dati di risorsa da `A_FAS`.
 
 ---
 
@@ -105,12 +118,28 @@ Un file di esempio è disponibile in `samples/test_import.xlsx`.
 - Upsert padre-figlio; le relazioni non presenti nell'Excel non vengono eliminate
 
 ### Ciclo (`A_FAC` / `A_CCL`)
-- Crea il ciclo (`A_CCL`) se non esiste
+- Crea il ciclo (`A_CCL`) **solo per gli articoli che hanno almeno una fase nel file Excel**
 - **Le fasi vengono sincronizzate**: fasi presenti in Factory ma assenti nel nuovo Excel vengono **eliminate**
 - I dati di risorsa (operatori, macchine, percentuali, costi) vengono copiati da `A_FAS`
-- Le durate (`DurataH`, `DurataMin`) vengono prese dall'Excel
+- I tempi (`TempoAtt`, `TempoLav` in minuti) vengono presi dall'Excel e convertiti in ore/secondi
 - L'ultima fase del ciclo riceve `FAUFC = 'Y'`
 - La sincronizzazione avviene **solo se**: il flusso Ciclo è attivato **e** il ciclo ha almeno una fase nel file Excel
+
+---
+
+## Custom Forms Factory
+
+Nella cartella `docs/` è presente il file `ExcelBOM.CustomForms.xml` da importare in Factory per visualizzare i dati direttamente dal gestionale:
+
+| Form | Descrizione |
+|---|---|
+| ExcelBOM - Log | Log delle esecuzioni import (stato, errori) |
+| ExcelBOM - Mappings Fasi | Gestione mappature CodiceExcel → CodiceSistema |
+| ExcelBOM - Staging Articoli | Anagrafiche dell'ultimo staging |
+| ExcelBOM - Staging Distinta | Distinta base dell'ultimo staging |
+| ExcelBOM - Staging Fasi | Fasi ciclo dell'ultimo staging |
+
+Tutte le form sono nel gruppo ribbon **Tecnologia**.
 
 ---
 
