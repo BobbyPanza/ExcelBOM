@@ -145,12 +145,17 @@
     <DatabaseInfo>
       <Table>dbo.Xt_ExcelBom_Parts</Table>
       <Fields>
-        <Field ReadOnly="true" InKey="true" InWhere="true">
+        <Field ReadOnly="true" InKey="true" IsProgressive="true">
+          <Name>IDPart</Name>
+          <Caption>ID</Caption>
+          <Type>INTEGER</Type>
+        </Field>
+        <Field ReadOnly="true" InWhere="true">
           <Name>IDRun</Name>
           <Caption>ID Run</Caption>
           <Type>INTEGER</Type>
         </Field>
-        <Field ReadOnly="true" InKey="true" InWhere="true">
+        <Field ReadOnly="true" InWhere="true">
           <Name>PACOD</Name>
           <Caption>Codice Articolo</Caption>
           <Type>VARCHAR(50)</Type>
@@ -216,17 +221,22 @@
     <DatabaseInfo>
       <Table>dbo.Xt_ExcelBom_Rel</Table>
       <Fields>
-        <Field ReadOnly="true" InKey="true" InWhere="true">
+        <Field ReadOnly="true" InKey="true" IsProgressive="true">
+          <Name>IDRel</Name>
+          <Caption>ID</Caption>
+          <Type>INTEGER</Type>
+        </Field>
+        <Field ReadOnly="true" InWhere="true">
           <Name>IDRun</Name>
           <Caption>ID Run</Caption>
           <Type>INTEGER</Type>
         </Field>
-        <Field ReadOnly="true" InKey="true" InWhere="true">
+        <Field ReadOnly="true" InWhere="true">
           <Name>DBPAR</Name>
           <Caption>Padre</Caption>
           <Type>VARCHAR(50)</Type>
         </Field>
-        <Field ReadOnly="true" InKey="true" InWhere="true">
+        <Field ReadOnly="true" InWhere="true">
           <Name>DBCHL</Name>
           <Caption>Figlio</Caption>
           <Type>VARCHAR(50)</Type>
@@ -286,17 +296,22 @@
     <DatabaseInfo>
       <Table>dbo.Xt_ExcelBom_Phases</Table>
       <Fields>
-        <Field ReadOnly="true" InKey="true" InWhere="true">
+        <Field ReadOnly="true" InKey="true" IsProgressive="true">
+          <Name>IDPhase</Name>
+          <Caption>ID</Caption>
+          <Type>INTEGER</Type>
+        </Field>
+        <Field ReadOnly="true" InWhere="true">
           <Name>IDRun</Name>
           <Caption>ID Run</Caption>
           <Type>INTEGER</Type>
         </Field>
-        <Field ReadOnly="true" InKey="true" InWhere="true">
+        <Field ReadOnly="true" InWhere="true">
           <Name>PACOD</Name>
           <Caption>Codice Articolo</Caption>
           <Type>VARCHAR(50)</Type>
         </Field>
-        <Field ReadOnly="true" InKey="true">
+        <Field ReadOnly="true">
           <Name>FASEQ</Name>
           <Caption>Seq Fase</Caption>
           <Type>VARCHAR(10)</Type>
