@@ -41,8 +41,8 @@ BEGIN
         IF @UpdDistinta = 1
         BEGIN
             UPDATE a
-            SET a.DBSEQ = s.DBSEQ,
-                a.DBQTA = s.DBQTA,
+            SET a.DBSEQ = TRY_CAST(s.DBSEQ AS smallint),
+                a.DBQTA = TRY_CAST(REPLACE(s.DBQTA, ',', '.') AS numeric(18,6)),
                 a.DBUDM = s.DBUDM,
                 a.DBNT1 = s.DBNT1
             FROM A_DBS a
@@ -50,7 +50,10 @@ BEGIN
             WHERE s.IDRun = @IDRun;
 
             INSERT INTO A_DBS (DBPAR, DBCHL, DBSEQ, DBQTA, DBUDM, DBNT1, DBSFR, QTRCL)
-            SELECT s.DBPAR, s.DBCHL, s.DBSEQ, s.DBQTA, s.DBUDM, s.DBNT1, 0, 0
+            SELECT s.DBPAR, s.DBCHL,
+                   TRY_CAST(s.DBSEQ AS smallint),
+                   TRY_CAST(REPLACE(s.DBQTA, ',', '.') AS numeric(18,6)),
+                   s.DBUDM, s.DBNT1, 0, 0
             FROM Xt_ExcelBom_Rel s
             WHERE s.IDRun = @IDRun
               AND NOT EXISTS (SELECT 1 FROM A_DBS WHERE DBPAR = s.DBPAR AND DBCHL = s.DBCHL);
