@@ -530,6 +530,7 @@ public partial class MainForm : Form
 
         using var bulk = new SqlBulkCopy(conn, SqlBulkCopyOptions.Default, transaction);
         bulk.DestinationTableName = "Xt_ExcelBom_Parts";
+        foreach (DataColumn col in dt.Columns) bulk.ColumnMappings.Add(col.ColumnName, col.ColumnName);
         await bulk.WriteToServerAsync(dt);
     }
 
@@ -552,6 +553,7 @@ public partial class MainForm : Form
 
         using var bulk = new SqlBulkCopy(conn, SqlBulkCopyOptions.Default, transaction);
         bulk.DestinationTableName = "Xt_ExcelBom_Rel";
+        foreach (DataColumn col in dt.Columns) bulk.ColumnMappings.Add(col.ColumnName, col.ColumnName);
         await bulk.WriteToServerAsync(dt);
     }
 
@@ -574,6 +576,7 @@ public partial class MainForm : Form
 
         using var bulk = new SqlBulkCopy(conn, SqlBulkCopyOptions.Default, transaction);
         bulk.DestinationTableName = "Xt_ExcelBom_Phases";
+        foreach (DataColumn col in dt.Columns) bulk.ColumnMappings.Add(col.ColumnName, col.ColumnName);
         await bulk.WriteToServerAsync(dt);
     }
 
