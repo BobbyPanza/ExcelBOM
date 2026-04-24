@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CustomForms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:noNamespaceSchemaLocation="CustomForm.xsd">
+
+  <!-- ================================================================
+       1. Log esecuzioni SP
+       Mostra ogni run con stato (COMPLETED/ERROR) e messaggio di errore.
+       Read-only. Filtri: IDRun, Stato, Data inizio.
+       ================================================================ -->
+  <Form ShowImportButton="false" ShowInsertButton="false" ShowEditButton="false"
+        ShowDeleteButton="false" ShowPrintButton="false">
+    <Caption>ExcelBOM - Log</Caption>
+    <IconPath></IconPath>
+    <RibbonGroup>Tecnologia</RibbonGroup>
+    <DatabaseInfo>
+      <Table>dbo.Xt_ExcelBom_LogRun</Table>
+      <Fields>
+        <Field ReadOnly="true" InKey="true" InWhere="true" IsProgressive="true">
+          <Name>IDLog</Name>
+          <Caption>ID Log</Caption>
+          <Type>INTEGER</Type>
+        </Field>
+        <Field ReadOnly="true" InWhere="true">
+          <Name>IDRun</Name>
+          <Caption>ID Run</Caption>
+          <Type>INTEGER</Type>
+        </Field>
+        <Field ReadOnly="true">
+          <Name>Sorgente</Name>
+          <Caption>Sorgente</Caption>
+          <Type>VARCHAR(10)</Type>
+        </Field>
+        <Field ReadOnly="true">
+          <Name>DataInizio</Name>
+          <Caption>Data Inizio</Caption>
+          <Type>DATETIME2(6)</Type>
+        </Field>
+        <Field ReadOnly="true">
+          <Name>DataFine</Name>
+          <Caption>Data Fine</Caption>
+          <Type>DATETIME2(6)</Type>
+        </Field>
+        <Field ReadOnly="true" InWhere="true">
+          <Name>Stato</Name>
+          <Caption>Stato</Caption>
+          <Type>VARCHAR(50)</Type>
+        </Field>
+        <Field ReadOnly="true">
+          <Name>Errore</Name>
+          <Caption>Errore</Caption>
+          <Type>VARCHAR(max)</Type>
+        </Field>
+      </Fields>
+    </DatabaseInfo>
+    <FilterInfo>
+      <FilterRow>
+        <Filter Type="4">
+          <Field>IDRun</Field>
+          <Caption>ID Run</Caption>
+        </Filter>
+        <Filter Type="5" MultiSelect="true">
+          <Field>Stato</Field>
+          <Caption>Stato</Caption>
+          <Query>SELECT DISTINCT Stato, Stato, Stato FROM dbo.Xt_ExcelBom_LogRun ORDER BY Stato</Query>
+        </Filter>
+      </FilterRow>
+      <FilterRow>
+        <Filter Type="3">
+          <Field>DataInizio</Field>
+          <Caption>Data Inizio</Caption>
+        </Filter>
+      </FilterRow>
+    </FilterInfo>
+  </Form>
+
+  <!-- ================================================================
+       2. Mappings Fasi
+       Gestione mapping CodiceExcel → CodiceSistema per l'ambito FASE_CICLO.
+       Editabile: inserimento, modifica e cancellazione.
+       ================================================================ -->
+  <Form ShowImportButton="false" ShowInsertButton="true" ShowEditButton="true"
+        ShowDeleteButton="true" ShowPrintButton="false">
+    <Caption>ExcelBOM - Mappings Fasi</Caption>
+    <IconPath></IconPath>
+    <RibbonGroup>Tecnologia</RibbonGroup>
+    <DatabaseInfo>
+      <Table>dbo.Xt_ExcelBom_Mappings</Table>
+      <Fields>
+        <Field ReadOnly="true" InKey="true" InWhere="true" IsProgressive="true">
+          <Name>IDMapping</Name>
+          <Caption>ID</Caption>
+          <Type>INTEGER</Type>
+        </Field>
+        <Field InWhere="true" InUpdate="false">
+          <Name>Ambito</Name>
+          <Caption>Ambito</Caption>
+          <Type>VARCHAR(50)</Type>
+        </Field>
+        <Field InWhere="true" InUpdate="false">
+          <Name>CodiceExcel</Name>
+          <Caption>Codice Excel</Caption>
+          <Type>VARCHAR(100)</Type>
+        </Field>
+        <Field InUpdate="true">
+          <Name>CodiceSistema</Name>
+          <Caption>Codice Sistema (A_FAS)</Caption>
+          <Type>VARCHAR(50)</Type>
+        </Field>
+      </Fields>
+      <Constraints>
+        <Unique>Ambito,CodiceExcel</Unique>
+      </Constraints>
+    </DatabaseInfo>
+    <FilterInfo>
+      <FilterRow>
+        <Filter Type="5" MultiSelect="true">
+          <Field>Ambito</Field>
+          <Caption>Ambito</Caption>
+          <Query>SELECT DISTINCT Ambito, Ambito, Ambito FROM dbo.Xt_ExcelBom_Mappings ORDER BY Ambito</Query>
+        </Filter>
+        <Filter Type="2">
+          <Field>CodiceExcel</Field>
+          <Caption>Codice Excel</Caption>
+        </Filter>
+      </FilterRow>
+      <FilterRow>
+        <Filter Type="2">
+          <Field>CodiceSistema</Field>
+          <Caption>Codice Sistema</Caption>
+        </Filter>
+      </FilterRow>
+    </FilterInfo>
+  </Form>
+
+  <!-- ================================================================
+       3. Staging Articoli
+       Articoli caricati in staging per ogni run. Read-only.
+       Filtri: IDRun, Codice articolo, Famiglia.
+       ================================================================ -->
+  <Form ShowImportButton="false" ShowInsertButton="false" ShowEditButton="false"
+        ShowDeleteButton="false" ShowPrintButton="false">
+    <Caption>ExcelBOM - Staging Articoli</Caption>
+    <IconPath></IconPath>
+    <RibbonGroup>Tecnologia</RibbonGroup>
+    <DatabaseInfo>
+      <Table>dbo.Xt_ExcelBom_Parts</Table>
+      <Fields>
+        <Field ReadOnly="true" InKey="true" InWhere="true">
+          <Name>IDRun</Name>
+          <Caption>ID Run</Caption>
+          <Type>INTEGER</Type>
+        </Field>
+        <Field ReadOnly="true" InKey="true" InWhere="true">
+          <Name>PACOD</Name>
+          <Caption>Codice Articolo</Caption>
+          <Type>VARCHAR(50)</Type>
+        </Field>
+        <Field ReadOnly="true">
+          <Name>PADSC</Name>
+          <Caption>Descrizione</Caption>
+          <Type>VARCHAR(255)</Type>
+        </Field>
+        <Field ReadOnly="true" InWhere="true">
+          <Name>FMCOD</Name>
+          <Caption>Famiglia</Caption>
+          <Type>VARCHAR(50)</Type>
+        </Field>
+        <Field ReadOnly="true">
+          <Name>PAUDM</Name>
+          <Caption>UdM</Caption>
+          <Type>VARCHAR(10)</Type>
+        </Field>
+        <Field ReadOnly="true">
+          <Name>PATYP</Name>
+          <Caption>Tipo</Caption>
+          <Type>VARCHAR(10)</Type>
+        </Field>
+        <Field ReadOnly="true">
+          <Name>PATYF</Name>
+          <Caption>Fornitura</Caption>
+          <Type>VARCHAR(10)</Type>
+        </Field>
+      </Fields>
+    </DatabaseInfo>
+    <FilterInfo>
+      <FilterRow>
+        <Filter Type="4">
+          <Field>IDRun</Field>
+          <Caption>ID Run</Caption>
+        </Filter>
+        <Filter Type="2">
+          <Field>PACOD</Field>
+          <Caption>Codice Articolo</Caption>
+        </Filter>
+      </FilterRow>
+      <FilterRow>
+        <Filter Type="5" MultiSelect="true">
+          <Field>FMCOD</Field>
+          <Caption>Famiglia</Caption>
+          <Query>SELECT DISTINCT FMCOD, FMCOD, FMCOD FROM dbo.Xt_ExcelBom_Parts WHERE FMCOD IS NOT NULL ORDER BY FMCOD</Query>
+        </Filter>
+      </FilterRow>
+    </FilterInfo>
+  </Form>
+
+  <!-- ================================================================
+       4. Staging Distinta
+       Relazioni padre-figlio caricate in staging. Read-only.
+       Filtri: IDRun, Padre, Figlio.
+       ================================================================ -->
+  <Form ShowImportButton="false" ShowInsertButton="false" ShowEditButton="false"
+        ShowDeleteButton="false" ShowPrintButton="false">
+    <Caption>ExcelBOM - Staging Distinta</Caption>
+    <IconPath></IconPath>
+    <RibbonGroup>Tecnologia</RibbonGroup>
+    <DatabaseInfo>
+      <Table>dbo.Xt_ExcelBom_Rel</Table>
+      <Fields>
+        <Field ReadOnly="true" InKey="true" InWhere="true">
+          <Name>IDRun</Name>
+          <Caption>ID Run</Caption>
+          <Type>INTEGER</Type>
+        </Field>
+        <Field ReadOnly="true" InKey="true" InWhere="true">
+          <Name>DBPAR</Name>
+          <Caption>Padre</Caption>
+          <Type>VARCHAR(50)</Type>
+        </Field>
+        <Field ReadOnly="true" InKey="true" InWhere="true">
+          <Name>DBCHL</Name>
+          <Caption>Figlio</Caption>
+          <Type>VARCHAR(50)</Type>
+        </Field>
+        <Field ReadOnly="true">
+          <Name>DBSEQ</Name>
+          <Caption>Seq</Caption>
+          <Type>VARCHAR(10)</Type>
+        </Field>
+        <Field ReadOnly="true">
+          <Name>DBQTA</Name>
+          <Caption>Quantità</Caption>
+          <Type>VARCHAR(50)</Type>
+        </Field>
+        <Field ReadOnly="true">
+          <Name>DBUDM</Name>
+          <Caption>UdM</Caption>
+          <Type>VARCHAR(10)</Type>
+        </Field>
+        <Field ReadOnly="true">
+          <Name>DBNT1</Name>
+          <Caption>Nota</Caption>
+          <Type>VARCHAR(255)</Type>
+        </Field>
+      </Fields>
+    </DatabaseInfo>
+    <FilterInfo>
+      <FilterRow>
+        <Filter Type="4">
+          <Field>IDRun</Field>
+          <Caption>ID Run</Caption>
+        </Filter>
+        <Filter Type="2">
+          <Field>DBPAR</Field>
+          <Caption>Padre</Caption>
+        </Filter>
+      </FilterRow>
+      <FilterRow>
+        <Filter Type="2">
+          <Field>DBCHL</Field>
+          <Caption>Figlio</Caption>
+        </Filter>
+      </FilterRow>
+    </FilterInfo>
+  </Form>
+
+  <!-- ================================================================
+       5. Staging Fasi Ciclo
+       Fasi ciclo caricate in staging. Read-only.
+       Filtri: IDRun, Codice articolo, Cod fase.
+       ================================================================ -->
+  <Form ShowImportButton="false" ShowInsertButton="false" ShowEditButton="false"
+        ShowDeleteButton="false" ShowPrintButton="false">
+    <Caption>ExcelBOM - Staging Fasi</Caption>
+    <IconPath></IconPath>
+    <RibbonGroup>Tecnologia</RibbonGroup>
+    <DatabaseInfo>
+      <Table>dbo.Xt_ExcelBom_Phases</Table>
+      <Fields>
+        <Field ReadOnly="true" InKey="true" InWhere="true">
+          <Name>IDRun</Name>
+          <Caption>ID Run</Caption>
+          <Type>INTEGER</Type>
+        </Field>
+        <Field ReadOnly="true" InKey="true" InWhere="true">
+          <Name>PACOD</Name>
+          <Caption>Codice Articolo</Caption>
+          <Type>VARCHAR(50)</Type>
+        </Field>
+        <Field ReadOnly="true" InKey="true">
+          <Name>FASEQ</Name>
+          <Caption>Seq Fase</Caption>
+          <Type>VARCHAR(10)</Type>
+        </Field>
+        <Field ReadOnly="true" InWhere="true">
+          <Name>FACOD</Name>
+          <Caption>Cod Fase</Caption>
+          <Type>VARCHAR(50)</Type>
+        </Field>
+        <Field ReadOnly="true">
+          <Name>FADSC</Name>
+          <Caption>Descrizione</Caption>
+          <Type>VARCHAR(255)</Type>
+        </Field>
+        <Field ReadOnly="true">
+          <Name>FAHLV</Name>
+          <Caption>Durata H</Caption>
+          <Type>VARCHAR(50)</Type>
+        </Field>
+        <Field ReadOnly="true">
+          <Name>FASLV</Name>
+          <Caption>Durata Min</Caption>
+          <Type>VARCHAR(50)</Type>
+        </Field>
+      </Fields>
+    </DatabaseInfo>
+    <FilterInfo>
+      <FilterRow>
+        <Filter Type="4">
+          <Field>IDRun</Field>
+          <Caption>ID Run</Caption>
+        </Filter>
+        <Filter Type="2">
+          <Field>PACOD</Field>
+          <Caption>Codice Articolo</Caption>
+        </Filter>
+      </FilterRow>
+      <FilterRow>
+        <Filter Type="5" MultiSelect="true">
+          <Field>FACOD</Field>
+          <Caption>Cod Fase</Caption>
+          <Query>SELECT DISTINCT FACOD, FACOD, FACOD FROM dbo.Xt_ExcelBom_Phases WHERE FACOD IS NOT NULL ORDER BY FACOD</Query>
+        </Filter>
+      </FilterRow>
+    </FilterInfo>
+  </Form>
+
+</CustomForms>

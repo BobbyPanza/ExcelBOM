@@ -2,6 +2,8 @@
 src/ExcelBOM/bin/
 src/ExcelBOM/obj/
 publish/
+release_v1.0/
+*.zip
 
 # Claude internal
 .claude/
@@ -9,6 +11,7 @@ publish/
 # User-specific
 *.user
 *.suo
+doc/
 .vs/
 
 # Local config with real credentials (copy from config.json and fill in)
