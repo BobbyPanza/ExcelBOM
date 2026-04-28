@@ -41,11 +41,60 @@ Apri `config.json` con un editor di testo e modifica la `ConnectionString` con i
   "FAMIGLIA_DEFAULT": "",
   "EnableAnagrafiche": true,
   "EnableDistinta": true,
-  "EnableCiclo": true
+  "EnableCiclo": true,
+
+  "Sheet_Articoli": "Articoli",
+  "Sheet_Diba": "Diba",
+  "Sheet_Cicli": "Cicli",
+
+  "Col_Articoli_Codice": "Codice",
+  "Col_Articoli_Descrizione": "Descrizione",
+  "Col_Articoli_Famiglia": "Famiglia",
+  "Col_Articoli_UdM": "UdM",
+
+  "Col_Diba_Padre": "Padre",
+  "Col_Diba_Figlio": "Figlio",
+  "Col_Diba_Seq": "Seq",
+  "Col_Diba_Quantita": "Quantità",
+  "Col_Diba_UdM": "UdM",
+  "Col_Diba_Nota": "Nota",
+
+  "Col_Cicli_Codice": "Codice",
+  "Col_Cicli_SeqFase": "SeqFase",
+  "Col_Cicli_CodFase": "CodFase",
+  "Col_Cicli_Descrizione": "Descrizione",
+  "Col_Cicli_TempoAtt": "TempoAtt",
+  "Col_Cicli_TempoLav": "TempoLav"
 }
 ```
 
 `config.json` deve stare nella stessa cartella di `ExcelBOM.exe`.
+
+### Nomi fogli e colonne
+
+I valori `Sheet_*` e `Col_*` permettono di adattare l'applicazione a Excel con intestazioni diverse da quelle di default. Se il tuo file ha ad esempio il foglio chiamato `BOM` invece di `Diba`, basta cambiare `"Sheet_Diba": "BOM"`.
+
+| Chiave | Default | Descrizione |
+|---|---|---|
+| `Sheet_Articoli` | `Articoli` | Nome del foglio anagrafiche |
+| `Sheet_Diba` | `Diba` | Nome del foglio distinta base |
+| `Sheet_Cicli` | `Cicli` | Nome del foglio cicli |
+| `Col_Articoli_Codice` | `Codice` | Colonna codice articolo |
+| `Col_Articoli_Descrizione` | `Descrizione` | Colonna descrizione |
+| `Col_Articoli_Famiglia` | `Famiglia` | Colonna famiglia |
+| `Col_Articoli_UdM` | `UdM` | Colonna unità di misura |
+| `Col_Diba_Padre` | `Padre` | Colonna articolo padre |
+| `Col_Diba_Figlio` | `Figlio` | Colonna articolo figlio |
+| `Col_Diba_Seq` | `Seq` | Colonna sequenza |
+| `Col_Diba_Quantita` | `Quantità` | Colonna quantità |
+| `Col_Diba_UdM` | `UdM` | Colonna unità di misura distinta |
+| `Col_Diba_Nota` | `Nota` | Colonna nota |
+| `Col_Cicli_Codice` | `Codice` | Colonna codice articolo ciclo |
+| `Col_Cicli_SeqFase` | `SeqFase` | Colonna sequenza fase |
+| `Col_Cicli_CodFase` | `CodFase` | Colonna codice fase |
+| `Col_Cicli_Descrizione` | `Descrizione` | Colonna descrizione fase |
+| `Col_Cicli_TempoAtt` | `TempoAtt` | Colonna tempo attrezzaggio (minuti interi) |
+| `Col_Cicli_TempoLav` | `TempoLav` | Colonna tempo lavorazione (minuti interi) |
 
 ---
 
