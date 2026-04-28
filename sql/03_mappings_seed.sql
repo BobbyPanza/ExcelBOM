@@ -1,7 +1,8 @@
 -- Crea tabelle di supporto e seed mappings per ExcelBOM
 
 -- Xt_ExcelBom_Mappings: mapping codici Excel → codici sistema
-IF OBJECT_ID('dbo.Xt_ExcelBom_Mappings', 'U') IS NULL
+IF OBJECT_ID('dbo.Xt_ExcelBom_Mappings', 'U') IS NOT NULL
+    DROP TABLE dbo.Xt_ExcelBom_Mappings;    
 BEGIN
     CREATE TABLE dbo.Xt_ExcelBom_Mappings (
         IDMapping     INT IDENTITY(1,1) PRIMARY KEY,
@@ -13,7 +14,8 @@ END
 
 -- Xt_ExcelBom_LogRun: log delle importazioni
 -- IDLog è il PK auto-generato; IDRun referenzia Xt_ExcelBom_Run
-IF OBJECT_ID('dbo.Xt_ExcelBom_LogRun', 'U') IS NULL
+IF OBJECT_ID('dbo.Xt_ExcelBom_LogRun', 'U') IS NOT NULL
+    DROP TABLE dbo.Xt_ExcelBom_LogRun;
 BEGIN
     CREATE TABLE dbo.Xt_ExcelBom_LogRun (
         IDLog      INT IDENTITY(1,1) PRIMARY KEY,
