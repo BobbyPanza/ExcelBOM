@@ -271,10 +271,16 @@ public partial class MainForm : Form
     private void LoadConfig()
     {
         var configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.json");
-        if (File.Exists(configPath))
+        if (!File.Exists(configPath)) return;
+
+        var json = File.ReadAllText(configPath);
+        using var doc = JsonDocument.Parse(json);
+        config = new Dictionary<string, string>();
+        foreach (var prop in doc.RootElement.EnumerateObject())
         {
-            var json = File.ReadAllText(configPath);
-            config = JsonSerializer.Deserialize<Dictionary<string, string>>(json) ?? new();
+            config[prop.Name] = prop.Value.ValueKind == JsonValueKind.String
+                ? prop.Value.GetString() ?? ""
+                : prop.Value.ToString();
         }
     }
 

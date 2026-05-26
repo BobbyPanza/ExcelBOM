@@ -2,7 +2,7 @@
 
 ## 1. Scarica e decomprimi
 
-Scarica `ExcelBOM_v1.3.zip` e decomprimi in una cartella locale, ad esempio:
+Scarica `ExcelBOM_v1.4.zip` e decomprimi in una cartella locale, ad esempio:
 
 ```
 C:\Tools\ExcelBOM\
